@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{% static 'images/favicon.png' %}">
+  <title>GameLoot</title>
+
+  <!-- FontAwesome CDN for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    body {
+      background-color: rgb(5, 6, 25);
+      padding: 0;
+      margin: 0;
+    }
+
+    .varre {
+      background-color: rgba( 0, 0, 0.6);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 90px;
+      z-index: 1000;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      height: 100%;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 20px;
+    }
+
+    .xe {
+      color: #ffffff;
+      margin: 0;
+      padding-left: 10px;
+      font-size: 20px;
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .search-container input {
+      width: 200px;
+      padding: 8px 40px 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      outline: none;
+      transition: all 0.4s ease;
+      background-color: white;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-container input:focus {
+      width: 350px;
+      border-color: #00f2fe;
+      box-shadow: 0 0 8px #00f2fe;
+    }
+
+    .search-container .icon {
+      position: absolute;
+      right: 10px;
+      font-size: 18px;
+      color: #555;
+      pointer-events: none;
+      transition: color 0.4s ease;
+    }
+
+    .search-container input:focus + .icon {
+      color: #007BFF;
+    }
+
+    .panier-link, .biblio-link {
+      font-size: 25px;
+      color: white;
+      text-decoration: none;
+      transition: 0.3s ease;
+      margin-left: 20px;
+    }
+
+    .panier-link:hover, .biblio-link:hover {
+      color: #00f2fe;
+      transform: scale(1.2);
+    }
+
+    .barre {
+      background-color: rgba(0, 0, 0, 0.6);
+      background-size: cover;
+      background-repeat: no-repeat;
+      font-family: Arial, sans-serif;
+      width: 100%;
+      height: 500px;
+      position: relative;
+      clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+      background-image: url('{% static "images/sakiro.jpg" %}');
+      margin-top: 90px;
+    }
+
+    .text {
+      color: rgb(0, 0, 0);
+      float: right;
+      margin-top: 230px;
+      margin-right: 200px;
+      font-size: 35px;
+    }
+
+    .price {
+      font-size: 25px;
+      margin-top: 10px;
+      margin-left: 60px;
+      color: #ffffff;
+      background-color: #cf7200;
+      padding: 5px 15px;
+      border-radius: 8px;
+      display: inline-block;
+    }
+
+    .titre {
+      color: white;
+      margin-top: 40px;
+      margin-bottom: 50px;
+      margin-left: 20px;
+    }
+     .media-container {
+      width: 200px;
+      height: 200px;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      display: inline-block;
+      margin-left: 20px;
+    }
+
+    .media-container:hover {
+      transform: scale(1.03);
+    }
+
+    .media-container img,
+    .media-container video {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.5s ease;
+      border-radius: 12px;
+    }
+
+    .media-container video {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .media-container:hover video {
+      opacity: 1;
+    }
+
+    .media-container:hover img {
+      opacity: 0;
+    }
+     .produits-container {
+    display: flex;
+    flex-wrap: wrap; /* permet de passer à la ligne si pas kifahom */
+    gap: 20px;
+    padding: 10px;
+  }
+  .media-container {
+    width: 280px;
+    height: 200px;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    display: inline-block;
+    /* margin-left: 20px; --> supprimé car gap gère espacement */
+  }
+  .media-container:hover {
+    transform: scale(1.03);
+  }
+  .media-container img,
+  .media-container video {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.5s ease;
+    border-radius: 12px;
+  }
+  .media-container video {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .media-container:hover video {
+    opacity: 1;
+  }
+  .media-container:hover img {
+    opacity: 0;
+  }
+  .no-video-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: white;
+    font-size: 24px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 50%;
+    padding: 5px;
+  }
+  .game-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 280px;
+}
+
+.info-game {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 8px;
+  padding: 0 5px;
+  color: white;
+  font-weight: bold;
+}
+
+.game-name {
+  text-align: left;
+  flex: 1;
+  font-size: 16px;
+}
+
+.game-price {
+  text-align: right;
+  font-size: 16px;
+  color: #cf7200;
+}
+.tto {
+  margin-top: 30px;
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imgtesto {
+  text-align: center;
+}
+
+.imgtesto img {
+  width: 100px;
+  height: 150px;
+  object-fit: contain;
+}
+
+.see {
+  color: white;
+  margin-top: 10px;
+
+}
+.titre2{
+  margin-left: 10px;
+  margin-top: 70px;
+  margin-bottom: 30px;
+  color: white;
+}
+ .grid {
+   clear: both; 
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: center;
+    }
+
+    .container {
+      position: relative;
+      width: 300px;
+      height: 200px;
+    }
+
+    .card-button {
+      text-decoration: none;
+      width: 100%;
+      height: 100%;
+      border: none;
+      background-image: url("{% static 'images/testo2.jpg' %}");
+      border-radius: 12px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding-left: 20px;
+      color: rgb(255, 255, 255);
+      font-size: 24px;
+      z-index: 1;
+      backdrop-filter: blur(2px);
+    }
+ .card-button1 {
+  text-decoration: none;
+      width: 100%;
+      height: 100%;
+      border: none;
+      background-image: url("{% static 'images/test3.jpg' %}");
+      border-radius: 12px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding-left: 20px;
+      color: rgb(255, 255, 255);
+      font-size: 24px;
+      z-index: 1;
+      backdrop-filter: blur(2px);
+    }
+.card-button2 {
+    text-decoration: none;
+      width: 100%;
+      height: 100%;
+      border: none;
+      background-image: url("{% static 'images/test4.jpg' %}");
+      border-radius: 12px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding-left: 20px;
+      color: rgb(255, 255, 255);
+      font-size: 24px;
+      z-index: 1;
+      backdrop-filter: blur(2px);
+    }
+    .card-button3 {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background-image: url("{% static 'images/test4.jpg' %}");
+      border-radius: 12px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding-left: 20px;
+      color: rgb(255, 255, 255);
+      font-size: 24px;
+      z-index: 1;
+      backdrop-filter: blur(2px);
+    }
+    .card-button4{
+      width: 100%;
+      height: 100%;
+      border: none;
+      background-image: url("{% static 'images/test5.jpg' %}");
+      border-radius: 12px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding-left: 20px;
+      color: rgb(255, 255, 255);
+      font-size: 24px;
+      z-index: 1;
+      backdrop-filter: blur(2px);
+    }
+    .card-button5 {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background-image: url("{% static 'images/suv.jpg' %}");
+      border-radius: 12px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding-left: 20px;
+      color: rgb(255, 255, 255);
+      font-size: 24px;
+      z-index: 1;
+      backdrop-filter: blur(2px);
+    }
+    .card-button6 {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background-image: url("{% static 'images/test6.jpg' %}");
+      border-radius: 12px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding-left: 20px;
+      color: rgb(255, 255, 255);
+      font-size: 24px;
+      z-index: 1;
+      backdrop-filter: blur(2px);
+    }
+    .character-img {
+      position: absolute;
+      right: 10px;
+      bottom: 0;
+      height: 100%;
+      z-index: 2;
+      transition: transform 0.4s ease;
+    }
+    .container:hover .character-img {
+      transform: scale(1.2) translateY(-20px);
+    }
+  /* Container pour le bouton Console */
+.console-btn-container {
+  width: 100%;
+  text-align: center;
+  margin: 60px 0 40px;
+  padding: 20px 0;
+  position: relative;
+}
+
+/* Style du bouton Console */
+.btn-console {
+  display: inline-block;
+  background-color: #cf7200;
+  color: white;
+  padding: 15px 30px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(207, 114, 0, 0.5);
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-console:hover {
+  background-color: #ff9e00;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(207, 114, 0, 0.7);
+}
+.btn-console {
+  background-color: #cf7200 !important;
+}
+@media (max-width: 768px) {
+  .btn-console {
+    padding: 12px 25px;
+    font-size: 16px;
+  }
+}
+  </style>
+</head>
+<body>
+
+  <div class="varre">
+    <div class="logo-container">
+      
+      <div class="logo-section">
+        <img src="{% static 'images/favicon.png' %}" class="logo">
+        <h3 class="xe">𝕲𝖆𝖒𝖊𝖑𝖔𝖔𝖙</h3>
+      </div>
+
+      <div class="search-container">
+        <input type="text" placeholder="Rechercher...">
+        <span class="icon">&#128269;</span>
+      </div>
+
+      <div>
+        <a href="{% url 'biblioteque_page' %}" class="biblio-link">
+          <i class="fas fa-book"></i>
+        </a>
+        <a href="{% url 'commande_page' %}" class="panier-link">
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="barre">
+    <div class="text">
+      <div>𝙎𝙚𝙠𝙠𝙞𝙧𝙤</div>
+      <div class="price">31.59$</div>
+    </div>
+  </div>
+
+  <h1 class="titre">𝐓𝐫𝐞𝐧𝐝𝐢𝐧𝐠 ></h1>
+<div class="produits-container">
+  {% for produit in produits %}
+    <div class="game-card">
+      <a href="{% url 'commande_detail' produit.id %}" class="media-container">
+        <img src="{{ produit.image.url }}" alt="image produit">
+        {% if produit.video %}
+          <video muted autoplay loop playsinline preload="auto">
+            <source src="{{ produit.video.url }}" type="video/mp4">
+            Ton navigateur ne supporte pas la vidéo.
+          </video>
+        {% else %}
+          <i class="fas fa-image no-video-icon" title="Pas de vidéo disponible"></i>
+        {% endif %}
+      </a>
+      <div class="info-game">
+        <span class="game-name">{{ produit.name }}</span>
+        <span class="game-price">{{ produit.price }}$</span>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+<div class="tto">
+  <div class="imgtesto">
+    <img src="{% static 'images/loyloy.png' %}" alt="logo">
+    <p class="see">⭐⭐⭐⭐⭐<br>𝐈𝐧𝐬𝐭𝐚𝐧𝐭 𝐆𝐚𝐦𝐢𝐧𝐠 𝐢𝐬 𝐚𝐧 𝐚𝐦𝐚𝐳𝐢𝐧𝐠 𝐩𝐥𝐚𝐭𝐟𝐨𝐫𝐦 𝐭𝐨 𝐛𝐮𝐲 𝐲𝐨𝐮𝐫 𝐏𝐂, 𝐏𝐥𝐚𝐲𝐒𝐭𝐚𝐭𝐢𝐨𝐧, 𝐗𝐛𝐨𝐱 𝐚𝐧𝐝 𝐒𝐰𝐢𝐭𝐜𝐡 𝐠𝐚𝐦𝐞𝐬 𝐜𝐡𝐞𝐚𝐩𝐞𝐫 𝐰𝐢𝐭𝐡 𝐚 𝟐𝟒/𝟕 𝐢𝐧𝐬𝐭𝐚𝐧𝐭 𝐝𝐞𝐥𝐢𝐯𝐞𝐫𝐲!
+</p>
+  </div>
+</div>
+<h1 class="titre2">𝘾𝙖𝙩𝙚𝙜𝙤𝙧𝙞𝙚𝙨 > </h1>
+<div class="grid">
+    <!-- First Button -->
+    <div class="container">
+      <a href="{% url 'sport_page' %}">
+      <button class="card-button">
+        Sports
+      </button>
+      <img class="character-img" src="{% static 'images/jude1.png' %}" alt="Fighter">
+      </a>
+    </div>
+
+    <!-- Second Button -->
+    <div class="container">
+       <a href="{% url 'adventure_page' %}">
+      <button class="card-button1">
+        Adventure
+      </button>
+      <img class="character-img" src="{% static 'images/zombie.png' %}" alt="Mario">
+      </a>
+    </div>
+
+    <!-- Third Button -->
+    <div class="container">
+         <a href="{% url 'action_page' %}">
+      <button class="card-button2">
+        Action
+      </button>
+      <img class="character-img" src="{% static 'images/michall.png' %}" alt="Racer">
+      </a>
+    </div>
+       <!-- Third Button -->
+    <div class="container">
+      <a href="{% url 'shoot_page' %}">
+      <button class="card-button4">
+        Shoot
+      </button>
+      <img class="character-img" src="{% static 'images/wow.png' %}" alt="Racer">
+      </a>
+    </div>
+  <div class="container">
+    <a href="{% url 'conduite_et_course_page' %}">
+      <button class="card-button5">
+        Racing
+      </button>
+      <img class="character-img" src="{% static 'images/jaw.png' %}" alt="Racer">
+      </a>
+    </div>
+    <div class="container">
+       <a href="{% url 'simulation_page' %}">
+      <button class="card-button6">
+        Simulator
+      </button>
+      <img class="character-img" src="{% static 'images/wiwii.png' %}" alt="Racer">
+      </a>
+    </div>
+ <div class="console-btn-container">
+  <a href="{% url 'console_page' %}" class="btn-console">Console</a>
+ </div>
+ <script>
+    // Optimisation du comportement vidéo : lecture uniquement au survol, pas de préchargement
+    document.querySelectorAll('.media-container').forEach(container => {
+      const video = container.querySelector('video');
+      if (video) {
+        // On évite preload automatique, et on joue/pause au survol
+        container.addEventListener('mouseenter', () => {
+          video.play().catch(() => {
+            // ignore erreurs si auto play bloqué
+          });
+        });
+        container.addEventListener('mouseleave', () => {
+          video.pause();
+          video.currentTime = 0;
+        });
+      }
+    });
+  </script>
+</body>
+</html>

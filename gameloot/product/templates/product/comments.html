@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="{% static 'images/favicon.png' %}">
+  <title>Formulaire Commentaires</title>
+  <style>
+    body {
+         background-color: rgb(5, 6, 25);
+        background-image: url("{% static 'images/godofwar2.jpg' %}");
+    background-size: cover;
+    background-repeat: no-repeat;
+      font-family: Arial, sans-serif;
+      margin: 2em;
+      background-color: #f9f9f9;
+    }
+    form {
+      max-width: 500px;
+      margin-bottom: 2em;
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+      padding: 10px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: vertical;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 1em;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #comments {
+      max-width: 500px;
+    }
+    .comment {
+      background: white;
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+    .h1{
+        color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="h1">Laisser un commentaire</h1>
+  
+  <form id="commentForm">
+    <textarea id="commentInput" placeholder="Écris ton commentaire ici..." required></textarea>
+    <br />
+    <button type="submit">Envoyer</button>
+  </form>
+
+  <h2>Commentaires :</h2>
+  <div id="comments"></div>
+
+  <script>
+    const form = document.getElementById('commentForm');
+    const commentInput = document.getElementById('commentInput');
+    const commentsDiv = document.getElementById('comments');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault(); // Empêche le rechargement de la page
+      
+      const commentText = commentInput.value.trim();
+      if(commentText === '') return;
+
+      // Créer un nouveau bloc commentaire
+      const newComment = document.createElement('div');
+      newComment.classList.add('comment');
+      newComment.textContent = commentText;
+
+      // Ajouter le commentaire à la liste
+      commentsDiv.appendChild(newComment);
+
+      // Réinitialiser le textarea
+      commentInput.value = '';
+    });
+  </script>
+
+</body>
+</html>

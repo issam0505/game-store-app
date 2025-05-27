@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{% static 'images/favicon.png' %}" >
+    <title>GameLoot - Sign in</title>
+    <style>
+        @keyframes fadeInZoom {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        form {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            width: 320px;
+            text-align: center;
+            animation: fadeInZoom 1s ease forwards;
+
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #ffffff;
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #00f2fe;
+            box-shadow: 0 0 8px #00f2fe;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+        }
+
+        input[type="submit"] {
+            background: linear-gradient(270deg, #00f2fe, #4facfe);
+            background-size: 400% 400%;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: background-position 0.5s, transform 0.2s;
+        }
+
+        input[type="submit"]:hover {
+            background-position: right center;
+            transform: scale(1.05);
+        }
+
+        a {
+            display: block;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #00f2fe;
+            font-size: 14px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .message {
+            margin-top: 15px;
+            color: #00ff7f;
+        }
+        .messages {
+            margin-top: 15px;
+            color: #ff0000;  
+        }
+    </style>
+</head>
+<body>
+     <video autoplay muted loop id="bg-video" style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;">
+    <source src="{% static 'videos/signcall.mp4' %}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+    <form method="POST">
+        {% csrf_token %}
+        <h2>GameLoot - Sign In</h2>
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <input type="submit" value="Sign Up">
+        <a href="{% url 'login_page' %}">Already have an account? Login</a>
+
+        {% if message %}
+            <p class="message">{{ message }}</p>
+        {% endif %}
+        {% if messages %}
+        <p class="messages">{{ messages }}</p>
+    {% endif %}
+    </form>
+</body>
+</html>

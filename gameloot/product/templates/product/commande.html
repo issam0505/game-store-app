@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="{% static 'images/favicon.png' %}">
+  <title>Passer commande</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: rgb(5, 6, 25);
+      background-image: url("{{ produit.image.url }}");
+      background-size: cover;
+      background-repeat: no-repeat;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .header-logo {
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 20px;
+      z-index: 1000;
+    }
+
+    .header-logo img {
+      width: 40px;
+      height: 40px;
+      border: 1px solid;
+      border-radius: 20px;
+      object-fit: contain;
+    }
+
+    .header-logo span {
+      font-size: 1.8em;
+      font-weight: bold;
+      color: #ffffff;
+      user-select: none;
+    }
+
+    .content {
+      margin-top: 20px;
+      width: 100%;
+      max-width: 600px;
+      padding: 20px;
+      box-sizing: border-box;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 10px;
+      color: white;
+    }
+
+    .product-image {
+      width: 100%;
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+      color: #ffffff;
+    }
+
+    .price {
+      color: #27ae60;
+      font-weight: bold;
+      margin-bottom: 20px;
+      font-size: 1.2em;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    label {
+      font-weight: 600;
+      color: white;
+    }
+
+    input[type="number"] {
+      padding: 10px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      width: 100px;
+    }
+
+    button {
+      background-color: #3498db;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 150px;
+      align-self: flex-start;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    .confirmation-message {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 15px 25px;
+      background: #2ecc71;
+      color: white;
+      border-radius: 5px;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.2);
+      z-index: 1000;
+      text-align: center;
+      animation: fadeInOut 3s ease forwards;
+    }
+    
+    @keyframes fadeInOut {
+      0% { opacity: 0; top: 0; }
+      10% { opacity: 1; top: 20px; }
+      90% { opacity: 1; top: 20px; }
+      100% { opacity: 0; top: 0; }
+    }
+
+    .error-message {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 15px 25px;
+      background: #e74c3c;
+      color: white;
+      border-radius: 5px;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.2);
+      z-index: 1000;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-logo">
+    <img src="{% static 'images/favicon.png' %}" alt="Logo GameLoot" />
+    <span>𝕲𝖆𝖒𝖊𝖑𝖔𝖔𝖙</span>
+  </div>
+
+  <div class="content">
+    <!-- Message de confirmation (seulement après ajout au panier) -->
+    {% if confirmation_message and should_redirect %}
+    <div class="confirmation-message">
+      {{ confirmation_message }}
+      <div>Redirection dans <span id="countdown">3</span> secondes...</div>
+    </div>
+    {% endif %}
+
+    <!-- Affichage des erreurs -->
+    {% if messages %}
+      {% for message in messages %}
+        <div class="error-message">
+          {{ message }}
+        </div>
+        <script>
+          setTimeout(() => {
+            document.querySelector('.error-message').remove();
+          }, 3000);
+        </script>
+      {% endfor %}
+    {% endif %}
+
+    <!-- Formulaire de commande -->
+    {% if produit %}
+    <h2>Ajoute : {{ produit.name }}</h2>
+    <img src="{{ produit.image.url }}" alt="Image de {{ produit.name }}" class="product-image" />
+    <p class="price">Prix : {{ produit.price }} $</p>
+
+    <form method="post" action="{% url 'commande_page' %}">
+      {% csrf_token %}
+      <input type="hidden" name="produit_id" value="{{ produit.id }}" />
+      <label for="quantite">Quantité :</label>
+      <input type="number" name="quantite" id="quantite" value="1" min="1" />
+      <button type="submit">ajouter en panier</button>
+      <h5>{{ produit.description }}</h5>
+    </form>
+    {% else %}
+    <p>Aucun produit sélectionné.</p>
+    {% endif %}
+  </div>
+
+  <!-- Script pour la redirection après ajout -->
+  {% if confirmation_message and should_redirect %}
+  <script>
+  // Compte à rebours et redirection
+  let seconds = 3;
+  const countdown = document.getElementById('countdown');
+  
+  const timer = setInterval(() => {
+    seconds--;
+    countdown.textContent = seconds;
+    
+    if(seconds <= 0) {
+      clearInterval(timer);
+      window.location.href = "{% url 'consulter2_page' %}";
+      
+      // Nettoyage côté serveur
+      fetch("{% url 'clear_message' %}", {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}',
+          'Content-Type': 'application/json'
+        }
+      });
+    }
+  }, 1000);
+  </script>
+  {% endif %}
+</body>
+</html>

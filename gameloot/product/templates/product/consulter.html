@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href="{% static 'images/favicon.png' %}" >
+<title>GameLoot</title>
+<style>
+  body {
+    background-color: rgb(5, 6, 25);
+        background-image: url("{% static 'images/godofwar2.jpg' %}");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 800px;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+
+.barre{
+   width: 100%;
+      height: 60px;
+      margin: 0;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      position: relative;
+    }
+    .user-icon {
+       margin-bottom: -10px;
+       margin-left: 20px;
+    }
+    .user-icon svg {
+      transition: transform 0.3s ease, stroke 0.3s ease;
+      cursor: pointer;
+    }
+    .user-icon:hover svg {
+      transform: scale(1.2);
+      stroke: #00f2fe;
+    }
+
+  .logo-container {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+  }
+
+  .xe {
+    color: #ffffff;
+    margin: 0;
+    padding-left: 10px;
+    font-size: 20px;
+  }
+  .btn{
+      display: flex;
+      justify-content: center;
+       gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      padding-bottom: 10px;
+    }
+      .btncl {
+      margin-left: 20px;
+      margin-right: 20px;
+      color: rgb(255, 255, 255);
+      text-decoration: none;  
+      border: none;
+
+    }
+    .btncl#xx{
+    color: rgb(8, 169, 255);
+     margin-left: 200px;
+     border: none ; 
+     border-bottom:2px solid ;
+     padding-bottom: 5px;
+    }
+    .btncl:hover{
+      color: rgb(8, 169, 255);
+       border: none ; 
+     border-bottom:2px solid ;
+     padding-bottom: 5px;
+    }
+.rs-carousel {
+  display: flex;
+  overflow-x: auto; /* Scroll activé */
+  gap: 10px;
+  padding: 20px;
+  margin-top: 150px;
+  margin-right: 50px;
+  width: 40%;
+  height: 200px;
+  float: right;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  scroll-snap-type: x mandatory;
+
+  /* Cacher la scrollbar */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
+
+.rs-carousel::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+.rs-carousel.active {
+  cursor: grabbing;
+  cursor: -webkit-grabbing;
+}
+.rs-carousel {
+  cursor: grab;
+  cursor: -webkit-grab;
+}
+.rs-carousel img {
+  text-align: center;
+  width: 150px;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  scroll-snap-align: start;
+  transition: transform 0.3s;
+}
+
+.rs-carousel img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #00f2fe;
+}
+.titre{
+  color: rgb(143, 123, 6);
+  margin-top: 150px;
+  margin-left: 30px;
+ margin-bottom: 10px;
+}
+.desc{
+  float: left;
+  margin-left: 20px;
+}
+  .fixed-info {
+    position: fixed;
+    position: sticky;
+    overflow: auto;
+    top: 0;
+  }
+
+.social-icons {
+  margin-top: 250px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+
+}
+
+.social-icons img {
+  width: 30px;
+  height: 30px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 50%;
+}
+
+.social-icons img:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 10px #00f2fe;
+}
+</style>
+</head>
+<body>
+  <video id="background-video" autoplay muted loop playsinline
+    style="position: fixed; top: 0; left: 0; z-index: -1; width: 100vw; height: 100vh; object-fit: cover;">
+    <source src="{% static 'videos/default_bg.mp4' %}" type="video/mp4">
+    Ton navigateur ne supporte pas la vidéo HTML5.
+</video>
+<div class="barre">
+
+  <div class="logo-container">
+    <img src="{% static 'images/favicon.png' %}" class="logo">
+    <h3 class="xe">𝕲𝖆𝖒𝖊𝖑𝖔𝖔𝖙</h3>
+  </div>
+   <div class="btn">
+    <div class="ppt">
+      <a href="#" class="btncl" id="xx">Acceuil</a>
+        </div>
+      <a href="{% url 'sign_page' %}" class="btncl">Boutique</a>
+      <a href="{% url 'comments_page' %}" class="btncl">comments</a>
+      </div>
+       <a href="/sign" class="user-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="16" cy="12" r="6"></circle>
+          <path d="M4 28c0-6 8-10 12-10s12 4 12 10"></path>
+        </svg>
+      </a>
+    </div>
+     <div class="fixed-info">
+<div class="rs-carousel">
+    <img src="{% static 'images/godofwarlogo.jpg' %}" data-video-url="{% static 'videos/godofwar.mp4' %}" data-audio-url="{% static 'audio/godofwarsong.mp3' %}"  data-desc="God of War Ragnarok est la suite très attendue de la célèbre série God of War, développée par Santa Monica Studio. Le jeu continue l’histoire de Kratos et de son fils Atreus, plongés dans un univers inspiré de la mythologie nordique. Ensemble, ils doivent faire face à des dieux redoutables et aux événements apocalyptiques du Ragnarok. Le gameplay combine des combats dynamiques, des énigmes et de l’exploration dans des paysages variés et immersifs. L’intrigue explore des thèmes profonds comme la famille, le destin et la lutte contre son propre passé. Ce jeu offre une expérience à la fois intense et émotive, captivant les joueurs du début à la fin."onclick="changeBackground(this)">
+  <img src="{% static 'images/blackopslogo.jpg' %}" data-video-url="{% static 'videos/blackops.mp4' %}" data-audio-url="{% static 'audio/callofdutysong.mp3' %}"  data-desc="Call of Duty: Black Ops 6, aussi connu sous le nom de Call of Duty: Black Ops Cold War Warzone, est un jeu de tir à la première personne très populaire. Il propose un mode multijoueur intense avec des batailles en ligne rapides et stratégiques. Le jeu inclut également un mode Warzone, un battle royale massif où les joueurs s’affrontent pour être les derniers survivants. L’histoire se déroule pendant la Guerre froide, avec une campagne riche en missions variées et des personnages mémorables. Les graphismes et le gameplay sont améliorés pour offrir une expérience immersive et fluide. Black Ops 6 est reconnu pour son action explosive et son ambiance réaliste." onclick="changeBackground(this)">
+    <img src="{% static 'images/fc25logo3.jpg' %}" data-video-url="{% static 'videos/fc25.mp4' %}"  data-audio-url="{% static 'audio/fc25song.mp3' %}" data-desc="FIFA 25 est le dernier opus de la célèbre franchise de jeux de football développée par EA Sports. Il propose des graphismes ultra-réalistes et une jouabilité fluide, offrant une expérience immersive aux fans de football. Le jeu inclut de nombreux modes, comme le mode carrière, Ultimate Team, et un mode en ligne compétitif. Les animations des joueurs et l’intelligence artificielle ont été améliorées pour plus de réalisme sur le terrain. FIFA 25 met aussi en avant des équipes et championnats du monde entier, avec des mises à jour régulières. C’est un incontournable pour tous les amateurs de football et de jeux vidéo sportifs." onclick="changeBackground(this)">
+  <img src="{% static 'images/thelastlogo.jpg' %}"data-video-url="{% static 'videos/thelast.mp4' %}" data-audio-url="{% static 'audio/thelastofusesong.mp3' %}"  data-desc="The Last of Us Partie 2 est un jeu d’action-aventure développé par Naughty Dog, suite du célèbre The Last of Us. L’histoire suit Ellie, devenue adolescente, dans un monde post-apocalyptique ravagé par une pandémie. Le jeu explore des thèmes forts comme la vengeance, la perte et la survie, avec une narration immersive et émotionnelle. Le gameplay combine furtivité, combats intenses et exploration de paysages variés. Les graphismes et les détails sonores offrent une ambiance réaliste et poignante. C’est une expérience bouleversante qui pousse les joueurs à réfléchir sur la nature humaine." onclick="changeBackground(this)">
+ <img src="{% static 'images/logo5.jpg' %}" data-video-url="{% static 'videos/gta5.mp4' %}"  data-audio-url="{% static 'audio/gta5song.mp3' %}" data-desc="GTA 5 (Grand Theft Auto V) est un jeu d’action-aventure en monde ouvert développé par Rockstar Games. Il se déroule dans la ville fictive de Los Santos, inspirée de Los Angeles, et suit trois protagonistes aux histoires croisées : Michael, Franklin et Trevor. Le jeu propose une grande liberté d’exploration, des missions variées et un mode multijoueur en ligne très populaire appelé GTA Online. Avec ses graphismes détaillés, son humour satirique et son gameplay riche, GTA 5 offre une expérience immersive et dynamique. Les joueurs peuvent participer à des courses, des braquages, ou simplement explorer la vaste carte. C’est un des jeux les plus vendus et appréciés de sa génération." onclick="changeBackground(this)">
+ <img src="{% static 'images/uncharted4.jpg' %}" data-video-url="{% static 'videos/uncharted.mp4' %}"  data-audio-url="{% static 'audio/unchartedsong.mp3' %}" data-desc="Uncharted 4: A Thief’s End est un jeu d’action-aventure développé par Naughty Dog et sorti en 2016 sur PlayStation 4. On y suit Nathan Drake, un ancien chasseur de trésors, qui reprend du service pour aider son frère Sam. Leur quête les mène à la recherche du trésor du pirate Henry Avery. Le jeu propose des paysages variés, de l’exploration, des énigmes et des séquences d’action spectaculaires. Il met aussi en avant les relations humaines et le conflit entre devoir et passion. Uncharted 4 est salué pour son scénario, ses graphismes et son gameplay fluide." onclick="changeBackground(this)">
+  <img src="{% static 'images/reddead.jpg' %}" data-video-url="{% static 'videos/reddead2.mp4' %}"  data-audio-url="{% static 'audio/reddeadsong.mp3' %}" data-desc="Red Dead Redemption 2 est un jeu vidéo développé par Rockstar Games, sorti en 2018. L’histoire se déroule en 1899 dans l’Ouest américain, où l’on incarne Arthur Morgan, un membre du gang Van der Linde. C’est un jeu en monde ouvert avec de l’exploration, des combats et des missions dans une ambiance western. Le scénario évolue selon les choix du joueur. Le jeu aborde des thèmes comme l’honneur, l’amitié et la fin de l’ère des hors-la-loi. Il est considéré comme l’un des meilleurs jeux vidéo de tous les temps." onclick="changeBackground(this)">
+</div>
+<div class="titre"><h2>Game Loot du Mois 🎮🗝️</h2></div>
+<div id="game-desc" class="desc" style="color:white;  padding: 20px;height: auto;width: 40%; background-color: rgba(0,0,0,0.6); border-radius: 10px; display: block;">
+Gameloot est ta destination ultime pour tout ce qui concerne les jeux vidéo. Que tu sois fan de nouveautés, de classiques ou à la recherche de guides et astuces, Gameloot t’offre une expérience complète et enrichissante. Découvre des critiques, des news, des tests, et des vidéos pour rester à jour avec l’univers du gaming. Notre communauté passionnée partage conseils et stratégies pour t’aider à progresser et t’amuser. Avec Gameloot, plonge au cœur de l’action, explore des mondes virtuels fascinants et connecte-toi avec des joueurs du monde entier. Rejoins-nous et transforme ta passion du jeu en aventure inoubliable !
+</div>
+</div>
+ <div class="social-icons">
+    <a href="https://www.facebook.com/ta-page" target="_blank">
+      <img src="{% static 'images/fb.png' %}" alt="Facebook">
+    </a>
+    <a href="https://wa.me/212612345678" target="_blank">
+      <img src="{% static 'images/wtts.png' %}" alt="WhatsApp">
+    </a>
+    <a href="https://twitter.com/ta-page" target="_blank">
+      <img src="{% static 'images/twitter.png' %}" alt="Twitter">
+    </a>
+  </div>
+<script>
+  const carouselImages = document.querySelectorAll('.rs-carousel img');
+  const video = document.getElementById('background-video');
+  let currentAudio = null;
+
+  function changeBackground(img) {
+    if (!img) return;
+
+    const videoUrl = img.getAttribute('data-video-url');
+    const audioUrl = img.getAttribute('data-audio-url');
+    const description = img.getAttribute('data-desc');
+    const bgUrl = img.getAttribute('data-bg-url');
+
+    if (video && videoUrl) {
+        video.src = videoUrl;
+        video.load();
+        video.play().catch(e => console.log('Erreur lecture vidéo:', e));
+    }
+
+    if (bgUrl) {
+        document.body.style.backgroundImage = `url('${bgUrl}')`;
+    } else {
+        document.body.style.backgroundImage = '';
+    }
+
+    // Mettre à jour la description
+    const descDiv = document.getElementById('game-desc');
+    if (descDiv && description) {
+        descDiv.textContent = description;
+    }
+
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio = null;
+    }
+
+    if (audioUrl) {
+        currentAudio = new Audio(audioUrl);
+        currentAudio.loop = true;
+        currentAudio.volume = 0.5;
+        currentAudio.play().catch(e => console.log('Erreur lecture audio:', e));
+    }
+}
+</script>
+
+
+</body>
+</html>

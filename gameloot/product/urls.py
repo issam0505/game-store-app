@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import productView,signView,loginview,CommandeView,consulter2View,sportView,adventureView,actionview,shootview,conduite_et_courseview,simulationview,panierview,consoleview,commentsview,ValiderCommandeView,ClearMessageView,bibliotequeview
+from .views import SearchProduitView , productView,signView,loginview,CommandeView,consulter2View,sportView,adventureView,actionview,shootview,conduite_et_courseview,simulationview,panierview,consoleview,commentsview,ValiderCommandeView,ClearMessageView,bibliotequeview
 urlpatterns = [
     path('',productView.as_view(),name='consulter'),
     path("sign/",signView.as_view(),name="sign_page"),
@@ -19,4 +19,5 @@ urlpatterns = [
      path("comments/",commentsview.as_view(),name="comments_page"),
      path('commander/', ValiderCommandeView.as_view(), name='valider_commande'),
      path('clear-message/', ClearMessageView.as_view(), name='clear_message'),
+     path('recherche/', SearchProduitView.as_view(), name='search_produit'),
 ]

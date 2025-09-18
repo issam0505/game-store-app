@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="{% static 'images/favicon.png' %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Recherche - {{ query }}</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      color: white;
+     
+    }
+
+    .video-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+      filter: brightness(0.4);
+    }
+
+    .center-info {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 0 20px #cf7200;
+      cursor: pointer;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .center-info:hover {
+      transform: translate(-50%, -50%) scale(1.05);
+    }
+
+    .center-info img {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+
+    .game-title {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .game-price {
+      font-size: 22px;
+      color: #cf7200;
+      font-weight: bold;
+    }
+
+    .no-result {
+      text-align: center;
+      margin-top: 100px;
+      font-size: 20px;
+      color: #ff6b6b;
+    }
+  </style>
+</head>
+<body>
+
+  {% if produit and produit.video %}
+    <video class="video-bg" autoplay muted loop>
+      <source src="{{ produit.video.url }}" type="video/mp4" />
+      Votre navigateur ne supporte pas la vidéo.
+    </video>
+  {% endif %}
+
+  {% if produit %}
+    <div class="center-info" data-url="{% url 'commande_detail' produit.id %}" title="Voir détails et commander">
+      <img src="{{ produit.image.url }}" alt="{{ produit.name }}">
+      <div class="game-title">{{ produit.name }}</div>
+      <div class="game-price">{{ produit.price }} $</div>
+    </div>
+  {% elif no_result %}
+    <p class="no-result">Aucun produit trouvé pour "{{ query }}"</p>
+  {% endif %}
+
+  <script>
+    document.querySelectorAll('[data-url]').forEach(el => {
+      el.addEventListener('click', () => {
+        const url = el.getAttribute('data-url');
+        if (url) window.location.href = url;
+      });
+    });
+  </script>
+
+</body>
+</html>

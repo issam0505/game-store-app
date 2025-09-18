@@ -5,6 +5,27 @@ from django.urls import reverse
 from django.http import JsonResponse
 from .models import sign, Produit, Commande
 import random
+class SearchProduitView(View):
+    def get(self, request):
+        query = request.GET.get('q')
+        produit = None
+        no_result = False
+
+        if query:
+            produits = Produit.objects.filter(name__icontains=query)
+            if produits.exists():
+                produit = produits.first()
+            else:
+                no_result = True  # ma l9ina 7ta 7aja
+        else:
+            produits = []
+
+        context = {
+            'produit': produit,
+            'query': query,
+            'no_result': no_result
+        }
+        return render(request, 'product/recherche.html', context)
 
 class bibliotequeview(View):
     def get(self, request):
